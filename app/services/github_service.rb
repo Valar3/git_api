@@ -16,6 +16,7 @@ class GithubService
       []
     end
   end
+  
   def user_repositories_with_star_count
     repositories = user_repositories
 

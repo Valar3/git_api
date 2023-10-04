@@ -11,9 +11,8 @@ class SessionsController < ApplicationController
     redirect_to '/dashboard', notice: 'Logged in!'
   end
 
-  def new
+  def new; end
 
-  end
   def destroy
     session[:user_id] = nil
     redirect_to root_url, notice: 'Logged out!'
