@@ -1,3 +1,4 @@
+<head><link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"></head>
 <h1>Welcome, <%= current_user.email %>!</h1>
 
 <h2>Your GitHub Repositories:</h2>
@@ -7,4 +8,4 @@
   <% end %>
 </ul>
 
-<%= link_to 'Logout', logout_path, class: 'btn btn-danger' %>
+<%= button_to 'Logout', logout_path,method: :get %>
