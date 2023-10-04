@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   get '/auth/failure', to: redirect('/')
   get '/logout', to: 'sessions#destroy', as: 'logout'
   get '/login', to: 'sessions#new', as: 'login'
-  root to: 'users#dashboard'
+  get 'dashboard', to: 'users#dashboard', as: 'dashboard'
+  root to: 'sessions#new'
 end

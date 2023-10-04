@@ -1,11 +1,9 @@
-<!-- app/views/users/dashboard.html.erb -->
-
-<h1>Welcome, <%= @user.name %>!</h1>
+<h1>Welcome, <%= current_user.email %>!</h1>
 
 <h2>Your GitHub Repositories:</h2>
 <ul>
   <% @repositories.each do |repo| %>
-    <li><%= repo['name'] %></li>
+    <li><%= repo['name'] %> - <%= repo['star_count'] %> stars</li>
   <% end %>
 </ul>
 
