@@ -1,0 +1,11 @@
+<head><link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"></head>
+<h1>Welcome, <%= current_user.email %>!</h1>
+
+<h2>Your GitHub Repositories:</h2>
+<ul>
+  <% @repositories.each do |repo| %>
+    <li><%= repo['name'] %> - <%= repo['star_count'] %> stars</li>
+  <% end %>
+</ul>
+
+<%= button_to 'Logout', logout_path,method: :get %>

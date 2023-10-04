@@ -5,7 +5,9 @@ ruby "3.2.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.5", ">= 7.0.5.1"
-
+gem 'httparty'
+gem 'omniauth-github', '~> 2.0.0'
+gem "omniauth-rails_csrf_protection"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
