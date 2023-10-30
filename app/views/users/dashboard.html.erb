@@ -1,11 +1,29 @@
-<head><link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"></head>
+<head>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+
 <h1>Welcome, <%= current_user.email %>!</h1>
 
+<form method="get" action="/dashboard">
+  <input type="text" list="repo-names" name="query">
+  <datalist id="repo-names">
+    <% @repo_names.each do |name| %>
+      <option value="<%= name %>"></option>
+    <% end %>
+  </datalist>
+  <input type="submit" value="Search">
+</form>
+
 <h2>Your GitHub Repositories:</h2>
+
 <ul>
-  <% @repositories.each do |repo| %>
-    <li><%= repo['name'] %> - <%= repo['star_count'] %> stars</li>
+  <% if @repositories.any? %>
+    <% @repositories.each do |repo| %>
+      <li><%= repo['name'] %> - <%= repo['star_count'] %> stars</li>
+    <% end %>
+  <% else %>
+    <li>No matches found</li>
   <% end %>
 </ul>
 
-<%= button_to 'Logout', logout_path,method: :get %>
+<%= button_to 'Logout', logout_path, method: :get %>
