@@ -42,7 +42,14 @@ class GithubService
 
   def fetch_star_count(owner, repo_name)
     response = self.class.get("/repos/#{owner}/#{repo_name}")
-    json_response = JSON.parse(response.body)
-    json_response['stargazers_count']
+
+    if response.success?
+      json_response = JSON.parse(response.body)
+      json_response['stargazers_count']
+    else
+      Rails.logger.error("Failed to fetch star count for #{owner}/#{repo_name}: #{response.body}")
+      nil
+    end
   end
+
 end
