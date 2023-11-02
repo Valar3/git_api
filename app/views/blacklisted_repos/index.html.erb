@@ -4,7 +4,7 @@
 
 <ul>
   <% @blacklisted_repos.each do |blacklist| %>
-    <li>
+          <li style="display: flex; align-items: center; gap: 10px;">
       <%= blacklist.blacklisted_repo_name %>
       <%= button_to 'Remove from Blacklist', unblacklist_path(current_user, blacklisted_repo_name: blacklist.blacklisted_repo_name), method: :delete %>
     </li>
