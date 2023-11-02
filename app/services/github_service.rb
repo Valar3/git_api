@@ -16,7 +16,7 @@ class GithubService
       []
     end
   end
-  
+
   def user_repositories_with_star_count
     repositories = user_repositories
 
@@ -26,6 +26,16 @@ class GithubService
     end
 
     repositories
+  end
+
+  def search_repositories(query)
+    begin
+      response = self.class.get('/search/repositories', headers: { 'Authorization' => "token #{@access_token}" }, query: { q: query })
+      JSON.parse(response.body)["items"]
+    rescue StandardError => e
+      Rails.logger.error("GitHub API Error: #{e.message}")
+      []
+    end
   end
 
   private
