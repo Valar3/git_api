@@ -8,41 +8,41 @@ class GithubService
   end
 
   def user_repositories
-    begin
-      response = self.class.get('/user/repos', headers: { 'Authorization' => "token #{@access_token}" })
-      JSON.parse(response.body)
-    rescue StandardError => e
-      Rails.logger.error("GitHub API Error: #{e.message}")
-      []
-    end
+    fetch_from_github('/user/repos')
   end
 
   def user_repositories_with_star_count
-    repositories = user_repositories
-
-    repositories.each do |repo|
-      star_count = fetch_star_count(repo['owner']['login'], repo['name'])
-      repo['star_count'] = star_count
+    user_repositories.map do |repo|
+      repo.merge('star_count'=> fetch_star_count(repo['owner']['login'], repo['name']))
     end
-
-    repositories
   end
 
   def search_repositories(query)
-    begin
-      response = self.class.get('/search/repositories', headers: { 'Authorization' => "token #{@access_token}" }, query: { q: query })
-      JSON.parse(response.body)["items"]
-    rescue StandardError => e
-      Rails.logger.error("GitHub API Error: #{e.message}")
-      []
-    end
+    fetch_from_github('/search/repositories', query: { q: query })["items"]
   end
 
   private
 
+  def fetch_from_github(endpoint, options = {})
+    options[:headers] = { 'Authorization' => "token #{@access_token}" }
+    response = self.class.get(endpoint, options)
+
+    if response.success?
+      JSON.parse(response.body)
+    else
+      handle_error(response)
+      []
+    end
+  end
+
   def fetch_star_count(owner, repo_name)
     response = self.class.get("/repos/#{owner}/#{repo_name}")
-    json_response = JSON.parse(response.body)
-    json_response['stargazers_count']
+    response.success? ? JSON.parse(response.body)['stargazers_count'] : nil
+  end
+
+  def handle_error(response)
+    error_message = "GitHub API Error: #{response.body}"
+    Rails.logger.error(error_message)
+    error_message
   end
 end

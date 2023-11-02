@@ -1,0 +1,14 @@
+<head><link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"></head>
+
+<h1>Blacklisted Repositories</h1>
+
+<ul>
+  <% @blacklisted_repos.each do |blacklist| %>
+          <li style="display: flex; align-items: center; gap: 10px;">
+      <%= blacklist.blacklisted_repo_name %>
+      <%= button_to 'Remove from Blacklist', unblacklist_path(current_user, blacklisted_repo_name: blacklist.blacklisted_repo_name), method: :delete %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'Back to Dashboard', dashboard_path %>
