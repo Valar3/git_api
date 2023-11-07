@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubService
   include HTTParty
   base_uri 'https://api.github.com'
@@ -13,12 +15,12 @@ class GithubService
 
   def user_repositories_with_star_count
     user_repositories.map do |repo|
-      repo.merge('star_count'=> fetch_star_count(repo['owner']['login'], repo['name']))
+      repo.merge('star_count' => fetch_star_count(repo['owner']['login'], repo['name']))
     end
   end
 
   def search_repositories(query)
-    fetch_from_github('/search/repositories', query: { q: query })["items"]
+    fetch_from_github('/search/repositories', query: { q: query })['items']
   end
 
   private

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  def new; end
+
   def create
     auth = request.env['omniauth.auth']
     user = User.find_or_create_by(uid: auth['uid'])
@@ -10,8 +12,6 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
     redirect_to '/dashboard', notice: 'Logged in!'
   end
-
-  def new; end
 
   def destroy
     reset_session
