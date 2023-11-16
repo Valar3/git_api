@@ -80,3 +80,5 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
+
+gem "pry", "~> 0.14.2"
