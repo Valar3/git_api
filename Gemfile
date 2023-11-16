@@ -7,6 +7,7 @@ ruby '3.2.1'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'httparty'
+gem 'http'
 gem 'omniauth-github', '~> 2.0.0'
 gem 'omniauth-rails_csrf_protection'
 gem 'rails', '~> 7.0.5', '>= 7.0.5.1'

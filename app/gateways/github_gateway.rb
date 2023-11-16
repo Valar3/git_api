@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+require 'http'
+
 class GithubGateway
-  require 'https'
-  base_uri 'https://api.github.com'
-  headers 'Accept' => 'application/json'
+  BASE_URI = 'https://api.github.com'
 
   def initialize(access_token)
     @access_token = access_token
@@ -20,17 +20,17 @@ class GithubGateway
   end
 
   def search_repositories(query)
-    fetch_from_github('/search/repositories', query: { q: query })['items']
+    fetch_from_github('/search/repositories', query: { q: query }).parse['items']
   end
 
   private
 
   def fetch_from_github(endpoint, options = {})
-    options[:headers] = { 'Authorization' => "token #{@access_token}" }
-    response = self.class.get(endpoint, options)
+    response = HTTP.headers(accept: 'application/json', authorization: "token #{@access_token}")
+                   .get(BASE_URI + endpoint, params: options[:query])
 
-    if response.success?
-      JSON.parse(response.body)
+    if response.status.success?
+      response.parse
     else
       handle_error(response)
       []
@@ -38,13 +38,14 @@ class GithubGateway
   end
 
   def fetch_star_count(owner, repo_name)
-    response = self.class.get("/repos/#{owner}/#{repo_name}")
-    response.success? ? JSON.parse(response.body)['stargazers_count'] : nil
+    response = HTTP.headers(accept: 'application/json', authorization: "token #{@access_token}")
+                   .get("#{BASE_URI}/repos/#{owner}/#{repo_name}")
+
+    response.status.success? ? response.parse['stargazers_count'] : nil
   end
 
   def handle_error(response)
     error_message = "GitHub API Error: #{response.body}"
     Rails.logger.error(error_message)
-    error_message
   end
 end
