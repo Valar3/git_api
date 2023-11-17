@@ -20,7 +20,7 @@ class GithubGateway
   end
 
   def search_repositories(query)
-    fetch_from_github('/search/repositories', query: { q: query }).parse['items']
+    fetch_from_github('/search/repositories', query: { q: query }).parse['items'].sort_by { |repo| DateTime.parse(repo['updated_at']) }.reverse
   end
 
   private
