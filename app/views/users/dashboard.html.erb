@@ -1,13 +1,9 @@
-<head>
-  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-</head>
-
 <h1>Welcome, <%= current_user.email %>!</h1>
 
 <form method="get" action="/dashboard">
   <input type="text" list="repo-names" name="query">
   <datalist id="repo-names">
-    <% @repo_names.each do |name| %>
+    <% repo_names.each do |name| %>
       <option value="<%= name %>"></option>
     <% end %>
   </datalist>
@@ -17,11 +13,11 @@
 <h2>Your GitHub Repositories:</h2>
 
 <ul>
- <% if @repositories.any? %>
-  <% @repositories.each do |repo| %>
+ <% if repositories.any? %>
+  <% repositories.each do |repo| %>
           <li style="display: flex; align-items: center; gap: 10px;">
       <%= repo['name'] %> - <%= repo['star_count'] %> stars
-    <%= button_to 'Blacklist', blacklist_path( blacklisted_repo_name:  repo['name']), method: :post%></li>
+    <%= button_to 'Blacklist', blacklisted_repos_path( blacklisted_repo_name:  repo['name']), method: :post%></li>
 </li>
   <% end %>
 <% else %>

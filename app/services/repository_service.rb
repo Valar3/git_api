@@ -1,15 +1,21 @@
 class RepositoryService
-  attr_reader :user
-
-  def initialize(user)
-    @user = user
-    @github_service = GithubService.new(user.github_access_token)
+  def self.call(user, github_gateway, query = nil)
+    new(user, github_gateway).send(:fetch_repositories, query)
   end
 
-  def fetch_repositories(query = nil)
-    all_repositories = @github_service.user_repositories_with_star_count
-    blacklisted_repo_names = user.blacklisted_repos.pluck(:blacklisted_repo_name)
+  private
 
+  attr_reader :user, :github
+
+  def initialize(user, github_gateway)
+    @user = user
+    @github = github_gateway
+  end
+
+  def fetch_repositories(query)
+    all_repositories = @github.user_repositories
+
+    blacklisted_repo_names = user.blacklisted_repos.pluck(:blacklisted_repo_name)
     filtered_repositories = all_repositories.reject do |repo|
       blacklisted_repo_names.include?(repo['name'])
     end
@@ -19,6 +25,12 @@ class RepositoryService
       filtered_repositories.select! { |repo| repo['name'].downcase.include?(query_downcase) }
     end
 
-    filtered_repositories.sort_by { |repo| DateTime.parse(repo['updated_at']) }.reverse
+    assign_star_counts(filtered_repositories)
+  end
+
+  def assign_star_counts(repositories)
+    repositories.map do |repo|
+      repo.merge('star_count' => @github.fetch_star_count(repo['owner']['login'], repo['name']))
+    end
   end
 end
