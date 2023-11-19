@@ -17,7 +17,7 @@
   <% repositories.each do |repo| %>
           <li style="display: flex; align-items: center; gap: 10px;">
       <%= repo['name'] %> - <%= repo['star_count'] %> stars
-    <%= button_to 'Blacklist', blacklist_path( blacklisted_repo_name:  repo['name']), method: :post%></li>
+    <%= button_to 'Blacklist', blacklisted_repos_path( blacklisted_repo_name:  repo['name']), method: :post%></li>
 </li>
   <% end %>
 <% else %>

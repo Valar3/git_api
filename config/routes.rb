@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   get '/logout', to: 'sessions#destroy', as: 'logout'
   get '/login', to: 'sessions#new', as: 'login'
   get 'dashboard', to: 'users#dashboard', as: 'dashboard'
-  post 'blacklist', to: 'blacklisted_repos#create'
-  get 'blacklisted_repos', to: 'blacklisted_repos#index'
-  delete 'unblacklist', to: 'blacklisted_repos#destroy'
+  resources :blacklisted_repos, only: [:create, :destroy, :index]
   root to: 'sessions#new'
 end

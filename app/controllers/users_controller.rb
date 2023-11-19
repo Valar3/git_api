@@ -2,9 +2,9 @@
 
 class UsersController < ApplicationController
   def dashboard
-    repository_service = RepositoryService.new(current_user)
-    repositories = repository_service.fetch_repositories(params[:query])
+    github_gateway = GithubGateway.new(current_user.github_access_token)
+    repositories = RepositoryService.call(current_user, github_gateway, params[:query])
     repo_names = repositories.pluck('name')
-    render 'dashboard', locals: { repo_names:, repositories:  }
+    render 'dashboard', locals: { repo_names:, repositories: }
   end
 end
