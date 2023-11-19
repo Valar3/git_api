@@ -10,21 +10,9 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
 require 'support/factory_bot'
-
-OmniAuth.config.test_mode = true
-OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
-                                                              provider: 'github',
-                                                              uid: '123545',
-                                                              info: {
-                                                                email: 'testuser@example.com',
-                                                                name: 'Test User',
-                                                                nickname: 'testuser'
-                                                              },
-                                                              credentials: {
-                                                                token: 'mock_token',
-                                                                secret: 'mock_secret'
-                                                              }
-                                                            })
+require 'webmock/rspec'
+require 'support/omniauth_helper'
+WebMock.allow_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

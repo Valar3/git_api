@@ -10,9 +10,9 @@ class GithubGateway
   end
 
   def user_repositories
-    response = fetch_from_github('/user/repos').sort_by { |repo|
+    response = fetch_from_github('/user/repos').sort_by do |repo|
       DateTime.parse(repo['updated_at'])
-    }.reverse
+    end.reverse
 
     return response if response.is_a?(Array)
 

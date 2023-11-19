@@ -3,7 +3,7 @@
 class BlacklistedReposController < ApplicationController
   def index
     blacklisted_repos = current_user.blacklisted_repos
-    render :index, locals: { blacklisted_repos: blacklisted_repos, current_user: current_user }
+    render :index, locals: { blacklisted_repos:, current_user: }
   end
 
   def create
